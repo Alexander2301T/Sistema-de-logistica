@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Control</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Menú de navegación lateral -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>Sistema de Control</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-section="dashboard">
+                    <a href="#"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li data-section="distribuidores">
+                    <a href="#"><i class="fas fa-users"></i> Distribuidores</a>
+                </li>
+                <li data-section="ventas">
+                    <a href="#"><i class="fas fa-chart-line"></i> Ventas</a>
+                </li>
+                <li data-section="inventario">
+                    <a href="#"><i class="fas fa-boxes"></i> Inventario</a>
+                </li>
+                <li data-section="reportes">
+                    <a href="#"><i class="fas fa-file-alt"></i> Reportes</a>
+                </li>
+                <li data-section="configuracion">
+                    <a href="#"><i class="fas fa-cog"></i> Configuración</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Contenido principal -->
+        <main class="main-content">
+            <!-- Encabezado -->
+            <header class="header">
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="user-info">
+                    <span>Admin</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </header>
+
+            <!-- Panel de información principal -->
+            <div class="dashboard-content">
+                <section id="dashboard" class="section-content active">
+                    <h1>Dashboard de Control</h1>
+
+                    <!-- Tarjetas de información -->
+                    <div class="info-cards">
+                        <div class="card">
+                            <div class="card-inner">
+                                <h3>Distribuidores</h3>
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h1 id="total-distribuidores">0</h1>
+                            <p>Distribuidores disponibles</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-inner">
+                                <h3>Ventas</h3>
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h1 id="total-ventas">0</h1>
+                            <p>Total este mes</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-inner">
+                                <h3>Inventario</h3>
+                                <i class="fas fa-boxes"></i>
+                            </div>
+                            <h1 id="total-inventario">0</h1>
+                            <p>Productos en stock</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-inner">
+                                <h3>Órdenes</h3>
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <h1 id="total-ordenes">0</h1>
+                            <p>Nuevas órdenes</p>
+                        </div>
+                    </div>
+
+                    <!-- Gráficos -->
+                    <div class="charts">
+                        <div class="chart">
+                            <h2>Ventas Mensuales</h2>
+                            <canvas id="ventas-chart"></canvas>
+                        </div>
+                        <div class="chart">
+                            <h2>Distribución por Zona</h2>
+                            <canvas id="distribucion-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de datos recientes -->
+                    <div class="recent-data">
+                        <h2>Datos Recientes</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Distribuidor</th>
+                                    <th>Zona</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-data-body">
+                                <!-- Los datos se cargarán desde JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Otras secciones que se mostrarán según la navegación -->
+                <section id="distribuidores" class="section-content">
+                    <h1>Gestión de Distribuidores</h1>
+                    <p>Contenido de distribuidores se cargará aquí</p>
+                </section>
+
+                <section id="ventas" class="section-content">
+                    <h1>Análisis de Ventas</h1>
+                    <p>Contenido de ventas se cargará aquí</p>
+                </section>
+
+                <section id="inventario" class="section-content">
+                    <h1>Control de Inventario</h1>
+                    <p>Contenido de inventario se cargará aquí</p>
+                </section>
+
+                <section id="reportes" class="section-content">
+                    <h1>Reportes</h1>
+                    <p>Contenido de reportes se cargará aquí</p>
+                </section>
+
+                <section id="configuracion" class="section-content">
+                    <h1>Configuración del Sistema</h1>
+                    <p>Opciones de configuración se cargarán aquí</p>
+                </section>
+            </div>
+        </main>
+
+        <!-- Panel lateral derecho - Distribuidores disponibles -->
+        <aside class="right-panel">
+            <div class="right-panel-header">
+                <h3>Distribuidores Disponibles</h3>
+            </div>
+            <div class="distributor-count">
+                <div class="count-circle">
+                    <span id="distributor-count-display">0</span>
+                </div>
+                <p>Total Disponibles</p>
+            </div>
+            <div class="distributor-list" id="distributor-list">
+                <!-- Lista de distribuidores disponibles -->
+                <p class="no-data">No hay distribuidores disponibles</p>
+            </div>
+            <div class="quick-actions">
+                <button class="action-btn"><i class="fas fa-plus"></i> Agregar</button>
+                <button class="action-btn"><i class="fas fa-sync-alt"></i> Actualizar</button>
+            </div>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

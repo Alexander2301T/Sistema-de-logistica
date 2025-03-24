@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Inventario y Logística</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsuites@4.17.1/dist/jsuites.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@4.13.3/dist/jspreadsheet.min.css" />
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Sistema de Gestión de Inventario y Logística</h1>
+            <nav class="main-nav">
+                <ul class="tabs">
+                    <li><a href="#" class="tab-link active" data-tab="productos-tab">Productos</a></li>
+                    <li><a href="#" class="tab-link" data-tab="vehiculos-tab">Vehículos</a></li>
+                    <li><a href="#" class="tab-link" data-tab="solver-tab">Optimizador</a></li>
+                    <li><a href="#" class="tab-link" data-tab="dashboard-tab">Dashboard</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Pestaña de Productos -->
+            <div id="productos-tab" class="tab-pane active">
+                <div class="section-header">
+                    <h2>Gestión de Productos</h2>
+                    <div class="actions-bar">
+                        <button id="add-producto-btn" class="btn primary">Agregar Producto</button>
+                        <button id="import-productos-btn" class="btn secondary">Importar</button>
+                        <button id="export-productos-btn" class="btn secondary">Exportar</button>
+                        <button id="customize-productos-btn" class="btn secondary">Personalizar Tabla</button>
+                    </div>
+                </div>
+                <div id="productos-table" class="spreadsheet-container"></div>
+            </div>
+
+            <!-- Pestaña de Vehículos -->
+            <div id="vehiculos-tab" class="tab-pane">
+                <div class="section-header">
+                    <h2>Gestión de Vehículos</h2>
+                    <div class="actions-bar">
+                        <button id="add-vehiculo-btn" class="btn primary">Agregar Vehículo</button>
+                        <button id="import-vehiculos-btn" class="btn secondary">Importar</button>
+                        <button id="export-vehiculos-btn" class="btn secondary">Exportar</button>
+                        <button id="customize-vehiculos-btn" class="btn secondary">Personalizar Tabla</button>
+                    </div>
+                </div>
+                <div id="vehiculos-table" class="spreadsheet-container"></div>
+            </div>
+
+            <!-- Pestaña del Optimizador -->
+            <div id="solver-tab" class="tab-pane">
+                <div class="solver-container">
+                    <div class="section-header">
+                        <h2>Optimizador de Carga</h2>
+                        <div class="actions-bar">
+                            <button id="run-solver-btn" class="btn primary">Ejecutar Optimizador</button>
+                            <button id="export-solution-btn" class="btn secondary">Exportar Solución</button>
+                        </div>
+                    </div>
+
+                    <div class="solver-options">
+                        <h3>Opciones de Optimización</h3>
+                        <div class="option-group">
+                            <label>
+                                <input type="checkbox" id="minimize-vehicles" checked>
+                                Minimizar cantidad de vehículos
+                            </label>
+                            <label>
+                                <input type="checkbox" id="balance-load" checked>
+                                Balancear carga entre vehículos
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="solver-section">
+                        <h3>Resultados de la Optimización</h3>
+                        <div id="solver-results" class="results-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña del Dashboard -->
+            <div id="dashboard-tab" class="tab-pane">
+                <div class="dashboard-container">
+                    <div class="section-header">
+                        <h2>Dashboard de Inventario y Logística</h2>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <h3>Resumen de Inventario</h3>
+                            <div id="inventory-summary" class="chart-container"></div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h3>Utilización de Vehículos</h3>
+                            <div id="vehicle-utilization" class="chart-container"></div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h3>Distribución de Carga</h3>
+                            <div id="load-distribution" class="chart-container"></div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <h3>Estadísticas de Optimización</h3>
+                            <div id="optimization-stats" class="stats-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modales -->
+    <div id="producto-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Agregar Producto</h2>
+            <form id="producto-form">
+                <div class="form-group">
+                    <label for="producto-codigo">Código:</label>
+                    <input type="text" id="producto-codigo" required>
+                </div>
+                <div class="form-group">
+                    <label for="producto-nombre">Nombre:</label>
+                    <input type="text" id="producto-nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="producto-categoria">Categoría:</label>
+                    <input type="text" id="producto-categoria">
+                </div>
+                <div class="form-group">
+                    <label for="producto-cantidad">Cantidad:</label>
+                    <input type="number" id="producto-cantidad" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="producto-peso">Peso (kg):</label>
+                    <input type="number" id="producto-peso" min="0.1" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="producto-volumen">Volumen (m³):</label>
+                    <input type="number" id="producto-volumen" min="0.01" step="0.01" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">Guardar</button>
+                    <button type="button" class="btn secondary cancel-btn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="vehiculo-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Agregar Vehículo</h2>
+            <form id="vehiculo-form">
+                <div class="form-group">
+                    <label for="vehiculo-id">ID:</label>
+                    <input type="text" id="vehiculo-id" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehiculo-nombre">Nombre:</label>
+                    <input type="text" id="vehiculo-nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehiculo-placa">Placa:</label>
+                    <input type="text" id="vehiculo-placa" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehiculo-peso">Capacidad de Peso (kg):</label>
+                    <input type="number" id="vehiculo-peso" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehiculo-volumen">Capacidad de Volumen (m³):</label>
+                    <input type="number" id="vehiculo-volumen" min="0.1" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="vehiculo-tipo">Tipo:</label>
+                    <input type="text" id="vehiculo-tipo">
+                </div>
+                <div class="form-group">
+                    <label for="vehiculo-ubicacion">Ubicación:</label>
+                    <input type="text" id="vehiculo-ubicacion">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="vehiculo-disponible" checked>
+                        Disponible
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">Guardar</button>
+                    <button type="button" class="btn secondary cancel-btn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="customize-table-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Personalizar Tabla</h2>
+            <form id="customize-table-form">
+                <div id="columns-container">
+                    <!-- Las columnas se generarán dinámicamente -->
+                </div>
+                <button type="button" id="add-column-btn" class="btn secondary">Agregar Columna</button>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">Aplicar Cambios</button>
+                    <button type="button" class="btn secondary cancel-btn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jsuites@4.17.1/dist/jsuites.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspreadsheet-ce@4.13.3/dist/jspreadsheet.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/solver.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>
